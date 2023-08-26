@@ -1,0 +1,143 @@
+[Scia Reto](https://sciareto.org) mind map   
+> __version__=`1.1`,generatorId=`com.igormaznitsa:scia-reto:sciareto-1.6.3`,showJumps=`true`
+---
+
+# Spring Boot with ReactJS
+
+## Project setup
+
+### Create Spring Boot project
+
+#### Modules
+
+##### Web Reactive
+
+#### Cleanup build\.gradle
+
+##### Add lombok plugin \(optional\)
+- NOTE
+<pre>    id 'io.freefair.lombok' version '8.1.0'
+</pre>
+
+##### Configure test extension instead of task
+- NOTE
+<pre>test {
+    useJUnitPlatform()
+}
+</pre>
+
+##### Remove compileOnly declaration
+- NOTE
+<pre>Remove:
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+</pre>
+
+### Add ReactJS module
+
+#### In project structure
+
+##### Add new module
+
+###### React generator
+
+####### Location = src/main
+
+####### Name = ui
+
+####### Project type = React
+
+####### Choose installed NodeJS
+
+#### Add proxy config In src/main/ui/package\.json
+- NOTE
+<pre>&quot;proxy&quot;: &quot;http://localhost:8080&quot;</pre>
+
+### Add NodeJS support
+
+#### Add node\-gradle plugin
+- NOTE
+<pre>    // https://github.com/node-gradle/gradle-node-plugin
+    id &quot;com.github.node-gradle.node&quot; version '3.5.1'
+</pre>
+
+#### Declare common variables
+- NOTE
+<pre>def uiSrcDir = layout.projectDirectory.dir('src/main/ui')
+def uiDestBuildDir = layout.buildDirectory.dir('ui')
+</pre>
+
+##### uiSrcDir
+
+###### Points to \`src/main/ui\`
+
+##### uiDestBuildDir
+
+###### Ends up under \`build\`
+
+#### Configure node extension
+- NOTE
+<pre>node {
+    download = findProperty('downloadNode') as boolean
+    version = '18.16.1'
+    nodeProjectDir.set(uiSrcDir)
+}
+</pre>
+
+##### Set nodeProjectDir
+
+###### Use \`set\` method since uiSrcDir is provider
+> mmd.emoticon=`lightbulb`
+
+
+#### Create extra tasks
+
+##### reactTest
+- NOTE
+<pre>tasks.register('reactTest', NpmTask) {
+    dependsOn 'npmInstall'
+    args = ['run', 'test']
+}
+</pre>
+
+###### Runs the \`test\` script declared in package\.json
+
+##### reactBuild
+- NOTE
+<pre>tasks.register('reactBuild', NpmTask) {
+    dependsOn 'npmInstall'
+    inputs.files(uiSrcDir.file('package.json'), uiSrcDir.file('package-lock.json'))
+    inputs.dir(uiSrcDir.dir('src'))
+    inputs.dir(uiSrcDir.dir('public'))
+    outputs.dir(uiDestBuildDir)
+
+    args = ['run', 'build']
+
+    execOverrides {
+        environment('BUILD_PATH', uiDestBuildDir.get().dir('static'))
+    }
+}
+</pre>
+
+###### Runs the \`build\` script declared in package\.json
+
+###### Registers inputs/output with gradle to optimize incremental builds
+
+###### Tells CRA build script build output location via \`BUILD\_PATH\`
+
+#### Hook reactBuild task into bootJar task
+- NOTE
+<pre>tasks.named('bootJar') {
+    dependsOn reactBuild
+
+    classpath(uiDestBuildDir)
+}
+</pre>
+
+##### Depends on reactBuild
+
+##### Adds new ui build output to classpath
