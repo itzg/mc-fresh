@@ -1,9 +1,9 @@
 package me.itzg.mcfresh.web;
 
 /**
- * Used for wrapping non-object (single and list) values
+ * Used for wrapping non-object values
  */
-public record Response<T>(
+public record ItemResponse<T>(
     T data
 ) {
 

@@ -1,4 +1,4 @@
-package me.itzg.mcfresh.loaders;
+package me.itzg.mcfresh.mods;
 
 import java.util.List;
 import java.util.Map;
@@ -17,9 +17,4 @@ public class ModsUpdateService {
         this.repoProviders = repoProviders;
     }
 
-    public Mono<List<UpgradeInfo>> checkForUpgrade(String modId, String currentVersion, String loader, String minecraftVersion) {
-        return Flux.fromStream(repoProviders.values().stream())
-            .flatMap(provider -> provider.checkForUpgrade(modId, currentVersion, loader, minecraftVersion))
-            .collectList();
-    }
 }

@@ -1,4 +1,4 @@
-package me.itzg.mcfresh.profiles.model;
+package me.itzg.mcfresh.profiles.ext;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

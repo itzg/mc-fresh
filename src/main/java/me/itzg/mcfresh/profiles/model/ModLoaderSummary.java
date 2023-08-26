@@ -1,2 +1,9 @@
-package me.itzg.mcfresh.profiles.model;public record ModLoaderSummary() {
+package me.itzg.mcfresh.profiles.model;
+
+import me.itzg.mcfresh.mods.LoaderVersion;
+
+public record ModLoaderSummary(
+    String loader,
+    LoaderVersion versions
+) {
 }

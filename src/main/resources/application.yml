@@ -1,1 +1,7 @@
-
+logging:
+  group:
+    app:
+      - me.itzg.mcfresh
+spring:
+  profiles:
+    default: cef

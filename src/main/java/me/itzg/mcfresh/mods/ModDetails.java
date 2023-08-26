@@ -1,4 +1,4 @@
-package me.itzg.mcfresh.loaders;
+package me.itzg.mcfresh.mods;
 
 public record ModDetails(
     String id,

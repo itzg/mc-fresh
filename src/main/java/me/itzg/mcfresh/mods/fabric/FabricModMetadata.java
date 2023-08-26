@@ -1,4 +1,4 @@
-package me.itzg.mcfresh.loaders.fabric;
+package me.itzg.mcfresh.mods.fabric;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

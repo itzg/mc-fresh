@@ -1,2 +1,9 @@
-package me.itzg.mcfresh.web;public record ListResponse() {
+package me.itzg.mcfresh.web;
+
+import java.util.Collection;
+
+public record ListResponse<T>(
+    Collection<T> data
+) {
+
 }

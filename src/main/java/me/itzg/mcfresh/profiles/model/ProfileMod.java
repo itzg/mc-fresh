@@ -1,2 +1,12 @@
-package me.itzg.mcfresh.profiles.model;public record ProfileMod() {
+package me.itzg.mcfresh.profiles.model;
+
+import me.itzg.mcfresh.mods.ModDetails;
+
+public record ProfileMod(
+    String id,
+    String name,
+    boolean enabled,
+    ModDetails details
+) {
+
 }

@@ -1,4 +1,4 @@
-package me.itzg.tryjcef;
+package me.itzg.mcfresh.cef;
 
 import java.awt.BorderLayout;
 import java.awt.HeadlessException;
@@ -8,9 +8,11 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import me.friwi.jcefmaven.EnumProgress;
 import me.friwi.jcefmaven.IProgressHandler;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("cef")
 public class JcefProgressDisplay extends JFrame implements IProgressHandler {
 
     private final JProgressBar progressBar;

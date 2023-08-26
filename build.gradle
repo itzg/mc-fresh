@@ -1,5 +1,8 @@
 plugins {
     id 'java'
+    id 'io.freefair.lombok' version '8.1.0'
+    // https://github.com/node-gradle/gradle-node-plugin
+    id "com.github.node-gradle.node" version '3.5.1'
     id 'org.springframework.boot' version '3.1.1'
     id 'io.spring.dependency-management' version '1.1.0'
 }
@@ -11,10 +14,38 @@ java {
     sourceCompatibility = '17'
 }
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+def uiSrcDir = layout.projectDirectory.dir('src/main/ui')
+def uiDestBuildDir = layout.buildDirectory.dir('ui')
+
+node {
+    download = findProperty('downloadNode') as boolean
+    version = '18.16.1'
+    nodeProjectDir.set(uiSrcDir)
+}
+
+tasks.register('reactTest', NpmTask) {
+    dependsOn 'npmInstall'
+    args = ['run', 'test']
+}
+
+tasks.register('reactBuild', NpmTask) {
+    dependsOn 'npmInstall'
+    inputs.files(uiSrcDir.file('package.json'), uiSrcDir.file('package-lock.json'))
+    inputs.dir(uiSrcDir.dir('src'))
+    inputs.dir(uiSrcDir.dir('public'))
+    outputs.dir(uiDestBuildDir)
+
+    args = ['run', 'build']
+
+    execOverrides {
+        environment('BUILD_PATH', uiDestBuildDir.get().dir('static'))
     }
+}
+
+tasks.named('bootJar') {
+    dependsOn reactBuild
+
+    classpath(uiDestBuildDir)
 }
 
 repositories {
@@ -23,12 +54,16 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'me.friwi:jcefmaven:110.0.25'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.14.2'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
 }

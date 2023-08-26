@@ -7,12 +7,20 @@
 ## Project setup
 
 ### Create Spring Boot project
+- NOTE
+<pre>or use https://start.spring.io/</pre>
 
-#### Modules
+#### Dependencies
 
-##### Web Reactive
+##### Spring Reactive Web
+
+##### Spring Boot Dev tools
+
+##### Spring Configuration Processor
 
 #### Cleanup build\.gradle
+> collapsed=`true`
+
 
 ##### Add lombok plugin \(optional\)
 - NOTE
@@ -38,12 +46,25 @@ configurations {
 </pre>
 
 ### Add ReactJS module
+> collapsed=`true`
+
+- NOTE
+<pre>Or from CLI
+
+cd src/main
+npx create-react-app ui</pre>
 
 #### In project structure
+> collapsed=`true`
+
 
 ##### Add new module
+> collapsed=`true`
+
 
 ###### React generator
+> collapsed=`true`
+
 
 ####### Location = src/main
 
@@ -58,6 +79,8 @@ configurations {
 <pre>&quot;proxy&quot;: &quot;http://localhost:8080&quot;</pre>
 
 ### Add NodeJS support
+> collapsed=`true`
+
 
 #### Add node\-gradle plugin
 - NOTE
@@ -66,20 +89,28 @@ configurations {
 </pre>
 
 #### Declare common variables
+> collapsed=`true`
+
 - NOTE
 <pre>def uiSrcDir = layout.projectDirectory.dir('src/main/ui')
 def uiDestBuildDir = layout.buildDirectory.dir('ui')
 </pre>
 
 ##### uiSrcDir
+> collapsed=`true`
+
 
 ###### Points to \`src/main/ui\`
 
 ##### uiDestBuildDir
+> collapsed=`true`
+
 
 ###### Ends up under \`build\`
 
 #### Configure node extension
+> collapsed=`true`
+
 - NOTE
 <pre>node {
     download = findProperty('downloadNode') as boolean
@@ -89,14 +120,20 @@ def uiDestBuildDir = layout.buildDirectory.dir('ui')
 </pre>
 
 ##### Set nodeProjectDir
+> collapsed=`true`
+
 
 ###### Use \`set\` method since uiSrcDir is provider
 > mmd.emoticon=`lightbulb`
 
 
 #### Create extra tasks
+> collapsed=`true`
+
 
 ##### reactTest
+> collapsed=`true`
+
 - NOTE
 <pre>tasks.register('reactTest', NpmTask) {
     dependsOn 'npmInstall'
@@ -107,6 +144,8 @@ def uiDestBuildDir = layout.buildDirectory.dir('ui')
 ###### Runs the \`test\` script declared in package\.json
 
 ##### reactBuild
+> collapsed=`true`
+
 - NOTE
 <pre>tasks.register('reactBuild', NpmTask) {
     dependsOn 'npmInstall'
@@ -130,6 +169,8 @@ def uiDestBuildDir = layout.buildDirectory.dir('ui')
 ###### Tells CRA build script build output location via \`BUILD\_PATH\`
 
 #### Hook reactBuild task into bootJar task
+> collapsed=`true`
+
 - NOTE
 <pre>tasks.named('bootJar') {
     dependsOn reactBuild
@@ -141,3 +182,31 @@ def uiDestBuildDir = layout.buildDirectory.dir('ui')
 ##### Depends on reactBuild
 
 ##### Adds new ui build output to classpath
+
+### Running/developing
+> collapsed=`true`
+
+
+#### Start Spring Boot app
+
+#### Start ui
+> collapsed=`true`
+
+
+##### npm run start
+
+## Docs
+> collapsed=`true`
+
+
+### Create React App \(CRA\)
+- LINK
+<pre>https://create-react-app.dev/</pre>
+
+### Spring Boot Web Reactive
+- LINK
+<pre>https://docs.spring.io/spring-boot/docs/current/reference/html/web.html#web.reactive</pre>
+
+### Spring Web Reactive
+- LINK
+<pre>https://docs.spring.io/spring-framework/reference/web-reactive.html</pre>

@@ -1,4 +1,4 @@
-package me.itzg.tryjcef;
+package me.itzg.mcfresh.cef;
 
 import java.awt.BorderLayout;
 import java.awt.HeadlessException;
@@ -7,21 +7,24 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
+import me.itzg.mcfresh.config.AppProperties;
 import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.browser.CefBrowser;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@Profile("cef")
 public class BrowserFrameService extends JFrame {
 
     private final CefApp cefApp;
 
-    public BrowserFrameService(CefApp cefApp) throws HeadlessException {
-        super("Try JCEF");
+    public BrowserFrameService(CefApp cefApp, AppProperties appProperties) throws HeadlessException {
+        super(appProperties.title());
         this.cefApp = cefApp;
     }
 
